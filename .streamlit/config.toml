@@ -1,0 +1,6 @@
+# Streamlit 配置：跳过首次运行的邮箱询问，避免卡住启动
+[browser]
+gatherUsageStats = false
+
+[server]
+headless = false
