@@ -5,7 +5,18 @@
 运行：
     C:/Users/86189/miniconda3/envs/dl/python.exe -m streamlit run app.py
 """
+import os
+
 import streamlit as st
+
+# 注入 Streamlit Cloud 的 secrets 到环境变量（本地无 secrets 时自动跳过），
+# 让 config.py 里的 os.environ.get("DEEPSEEK_KEY") 能读到云端配置的 key。
+try:
+    for _k, _v in st.secrets.items():
+        if isinstance(_v, str) and _k not in os.environ:
+            os.environ[_k] = _v
+except Exception:
+    pass
 
 from orchestrator import run_pipeline
 

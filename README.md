@@ -163,6 +163,21 @@ key **不硬编码在代码里**，统一从 `.env` 文件读（`config.py` 只�
 
 > 提醒：如果 key 曾经出现在聊天记录或旧提交里，建议去平台**重置一次**，旧 key 作废最稳妥。
 
+## 部署到 Streamlit Cloud（网页上线）
+
+代码推上 GitHub 后，几步就能上线成公开网页：
+
+1. 打开 https://share.streamlit.io ，用 **GitHub 账号登录**（和仓库同一个号）。
+2. 点 **Create app**（或 New app）→ 选仓库 `home-renovation-multi-agent`、分支 `main`、主文件 `app.py`。
+3. 展开 **Advanced settings** → 填 **Secrets**（这里就是云端版的 `.env`，**不会**公开）：
+   ```
+   DEEPSEEK_KEY = "sk-你的deepseek密钥"
+   SILICONFLOW_KEY = "sk-你的硅基流动密钥"
+   ```
+4. 点 **Deploy**，等 1-2 分钟构建，得到公开网址。
+
+> 原理：`app.py` 开头会把 Streamlit 的 `st.secrets` 注入到环境变量，`config.py` 照常读 `os.environ`，所以云端和本地用的是同一套代码，key 只存在云端 Secrets 里、不进仓库。
+
 ## 关系说明
 
 `rag_v2.py` 是本项目早期的单 Agent RAG 教程产物；本系统的检索能力由 `agents/retrieval_agent.py` 承载，
